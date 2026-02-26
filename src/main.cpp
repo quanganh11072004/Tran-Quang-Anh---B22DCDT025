@@ -1,42 +1,30 @@
-
+#include <Arduino.h>
 #include "DHT.h"
 
-#define DHTPIN 4    
-#define DHTTYPE DHT11   
-
+#define DHTPIN 4
+#define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE);
 
-void setup() {
+void setup()
+{
   Serial.begin(9600);
-  Serial.println(F("DHTxx test!"));
-
   dht.begin();
 }
 
-void loop() {
-  delay(2000);
-
-  float h = dht.readHumidity();
-  float t = dht.readTemperature();
-  float f = dht.readTemperature(true);
-
-  if (isnan(h) || isnan(t) || isnan(f)) {
-    Serial.println(F("Failed to read from DHT sensor!"));
+void loop()
+{
+  float humi = dht.readHumidity();
+  float temp = dht.readTemperature();
+  if (isnan(humi) || isnan(temp))
+  {
+    Serial.println("Error");
+    delay(2000);
     return;
   }
-
-  float hif = dht.computeHeatIndex(f, h);
-  float hic = dht.computeHeatIndex(t, h, false);
-
-  Serial.print(F("Humidity: "));
-  Serial.print(h);
-  Serial.print(F("%  Temperature: "));
-  Serial.print(t);
-  Serial.print(F("°C "));
-  Serial.print(f);
-  Serial.print(F("°F  Heat index: "));
-  Serial.print(hic);
-  Serial.print(F("°C "));
-  Serial.print(hif);
-  Serial.println(F("°F"));
+  Serial.print("Nhiet do: ");
+  Serial.print(temp);
+  Serial.print(" °C | Do am: ");
+  Serial.print(humi);
+  Serial.println(" %");
+  delay(2000);
 }
